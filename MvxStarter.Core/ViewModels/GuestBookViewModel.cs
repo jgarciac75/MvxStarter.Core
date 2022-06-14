@@ -1,4 +1,5 @@
-﻿using MvvmCross.ViewModels;
+﻿using MvvmCross.Commands;
+using MvvmCross.ViewModels;
 using MvxStarter.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,27 @@ namespace MvxStarter.Core.ViewModels
 {
   public class GuestBookViewModel : MvxViewModel
   {
+    public GuestBookViewModel()
+    {
+      AddGuestCommand = new MvxCommand(AddGuest);
+    }
+
+    public IMvxCommand  AddGuestCommand { get; set; }
+    public void AddGuest()
+    {
+      PersonModel p = new PersonModel
+      {
+        FirstName = FirstName,
+        LastName = LastName
+      };
+      FirstName = string.Empty;
+      LastName = string.Empty;
+
+      People.Add(p);
+    }
+
+    public bool CanAddGuest => FirstName?.Length > 0 && LastName?.Length > 0;
+
     private ObservableCollection<PersonModel> _people = new ObservableCollection<PersonModel>();
 
     public ObservableCollection<PersonModel> People
@@ -32,6 +54,7 @@ namespace MvxStarter.Core.ViewModels
       set { SetProperty(ref _firstName, value);
         // Disparar el Cambio de la Propiedad
         RaisePropertyChanged(() => FullName);
+        RaisePropertyChanged(() => CanAddGuest);
       }
     }
 
@@ -42,6 +65,7 @@ namespace MvxStarter.Core.ViewModels
       get { return _lastName; }
       set { SetProperty(ref _lastName, value);
         RaisePropertyChanged(() => FullName);
+        RaisePropertyChanged(() => CanAddGuest);
       }
     }
 

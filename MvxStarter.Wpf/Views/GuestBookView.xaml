@@ -24,6 +24,15 @@
       <TextBlock Text="Last Name" />
       <TextBox Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  Margin="0 0 0 15"/>
+      <Button Margin="0 0 0 15"        
+              mvx:Bi.nd="Command AddGuestCommand"
+              IsEnabled="{Binding CanAddGuest}"
+        >
+        Add Guest
+      </Button>
+      <DataGrid ItemsSource="{Binding People}"
+                AutoGenerateColumns="True"
+                ></DataGrid>
     </StackPanel>
 
   </Grid>
